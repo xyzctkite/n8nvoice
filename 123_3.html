@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>語音筆記 - 錄音轉文字</title>
+    <title>語音筆記</title>
     <style>
         * {
             margin: 0;
@@ -26,69 +26,50 @@
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 700px;
+            max-width: 600px;
             width: 100%;
         }
         
         h1 {
             text-align: center;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 30px;
             font-size: 28px;
         }
         
-        .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-        
-        .settings {
-            background: #f8f9fa;
-            padding: 20px;
+        .setup-section {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
             border-radius: 12px;
-            margin-bottom: 25px;
+            padding: 20px;
+            margin-bottom: 30px;
         }
         
-        .settings h3 {
-            color: #333;
-            margin-bottom: 15px;
+        .setup-title {
+            color: #856404;
+            font-weight: bold;
+            margin-bottom: 10px;
             font-size: 16px;
         }
         
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group:last-child {
-            margin-bottom: 0;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            color: #555;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        .form-group input {
+        .setup-input {
             width: 100%;
-            padding: 10px 12px;
-            border: 2px solid #e0e0e0;
+            padding: 10px;
+            border: 2px solid #ffc107;
             border-radius: 8px;
             font-size: 14px;
-            transition: border-color 0.3s;
+            margin-bottom: 10px;
         }
         
-        .form-group input:focus {
+        .setup-input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #ff9800;
         }
         
-        .hidden {
-            display: none;
+        .setup-note {
+            font-size: 13px;
+            color: #856404;
+            line-height: 1.5;
         }
         
         .recorder-section {
@@ -118,7 +99,6 @@
         .record-btn:disabled {
             background: #ccc;
             cursor: not-allowed;
-            box-shadow: none;
         }
         
         .record-btn.recording {
@@ -135,7 +115,6 @@
             margin-top: 20px;
             font-size: 16px;
             color: #666;
-            min-height: 24px;
         }
         
         .timer {
@@ -143,7 +122,6 @@
             color: #667eea;
             margin-top: 15px;
             font-weight: bold;
-            font-variant-numeric: tabular-nums;
         }
         
         .timer.recording {
@@ -152,7 +130,7 @@
         
         .loading {
             text-align: center;
-            padding: 30px;
+            padding: 20px;
             display: none;
         }
         
@@ -164,10 +142,10 @@
             border: 4px solid #f3f3f3;
             border-top: 4px solid #667eea;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
-            margin: 0 auto;
+            margin: 0 auto 10px;
         }
         
         @keyframes spin {
@@ -175,45 +153,11 @@
             100% { transform: rotate(360deg); }
         }
         
-        .loading-text {
-            margin-top: 15px;
-            color: #666;
-            font-size: 16px;
-        }
-        
-        .error {
-            background: #fee;
-            color: #c33;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            display: none;
-            border-left: 4px solid #c33;
-        }
-        
-        .error.show {
-            display: block;
-        }
-        
-        .success {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            display: none;
-            border-left: 4px solid #28a745;
-        }
-        
-        .success.show {
-            display: block;
-        }
-        
         .result-section {
             background: #f8f9fa;
             border-radius: 12px;
-            padding: 25px;
-            margin-top: 25px;
+            padding: 20px;
+            margin-top: 20px;
             display: none;
         }
         
@@ -222,102 +166,92 @@
         }
         
         .result-title {
-            font-size: 18px;
+            font-size: 16px;
             color: #333;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
         
         .result-text {
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid #e0e0e0;
-            min-height: 120px;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            min-height: 80px;
             font-size: 16px;
-            line-height: 1.8;
+            line-height: 1.6;
             color: #333;
-            white-space: pre-wrap;
         }
         
-        .info-box {
+        .audio-player {
             background: #e7f3ff;
-            border-left: 4px solid #2196F3;
-            padding: 12px 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .audio-player audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .audio-label {
             font-size: 14px;
             color: #0c5ba0;
+            font-weight: 500;
         }
         
-        .user-info {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            font-size: 13px;
-            color: #666;
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
         }
         
-        .user-info span {
-            background: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: 1px solid #e0e0e0;
+        .error.show {
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎤 語音筆記v1</h1>
-        <p class="subtitle">錄音自動轉換為繁體中文文字</p>
+        <h1>語音轉文字</h1>
         
-        <div class="settings">
-            <h3>⚙️ 設定</h3>
-            <div class="form-group hidden">
-                <label for="webhookUrl">n8n Webhook URL *</label>
-                <input type="text" id="webhookUrl" 
-                       value="https://xyzctkite.zeabur.app/webhook/upload-notes"
-                       readonly />
+        <div class="setup-section">
+            <div class="setup-title">⚙️ 設定您的 n8n Webhook URL</div>
+            <input 
+                type="text" 
+                id="webhookUrl" 
+                class="setup-input"
+                placeholder="請輸入您的 n8n Webhook URL (例如: https://your-n8n.com/webhook/upload-notes)"
+            />
+            <div class="setup-note">
+                💡 提示: 請先在 n8n 中建立工作流程,然後將 Webhook URL 貼到上方欄位中。URL 會自動儲存在瀏覽器中。
             </div>
-            <div class="form-group">
-                <label for="userId">使用者 ID (選填)</label>
-                <input type="text" id="userId" 
-                       placeholder="留空將自動生成" />
-            </div>
-            <div class="form-group">
-                <label for="fileName">筆記標題 (選填)</label>
-                <input type="text" id="fileName" 
-                       placeholder="留空將使用日期時間命名" />
-            </div>
-        </div>
-        
-        <div class="info-box">
-            💡 點擊下方按鈕開始錄音,再次點擊停止錄音並上傳
         </div>
         
         <div class="recorder-section">
             <button class="record-btn" id="recordBtn">開始錄音</button>
-            <div class="status" id="status">準備就緒</div>
+            <div class="status" id="status">請先設定 Webhook URL</div>
             <div class="timer" id="timer"></div>
         </div>
         
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <p class="loading-text">正在轉換語音為文字...</p>
+            <p>轉換中...</p>
         </div>
         
         <div class="error" id="error"></div>
-        <div class="success" id="success"></div>
         
         <div class="result-section" id="resultSection">
-            <div class="result-title">
-                📝 轉錄結果
-            </div>
+            <div class="result-title">轉錄結果:</div>
             <div class="result-text" id="resultText"></div>
-            <div class="user-info" id="userInfo"></div>
+            <div class="audio-player" id="audioPlayer">
+                <div class="audio-label">🔊 錄音播放:</div>
+                <audio id="audioElement" controls></audio>
+            </div>
         </div>
     </div>
 
@@ -327,31 +261,44 @@
         let isRecording = false;
         let startTime;
         let timerInterval;
+        let recordedAudioBlob = null;
         
+        const webhookUrlInput = document.getElementById('webhookUrl');
         const recordBtn = document.getElementById('recordBtn');
         const status = document.getElementById('status');
         const timer = document.getElementById('timer');
         const loading = document.getElementById('loading');
         const error = document.getElementById('error');
-        const success = document.getElementById('success');
         const resultSection = document.getElementById('resultSection');
         const resultText = document.getElementById('resultText');
-        const userInfo = document.getElementById('userInfo');
-        const userId = document.getElementById('userId');
-        const fileName = document.getElementById('fileName');
+        const audioElement = document.getElementById('audioElement');
         
-        // Webhook URL 已寫死
-        const WEBHOOK_URL = 'https://xyzctkite.zeabur.app/webhook/upload-notes';
-        
-        // 從 localStorage 讀取上次使用的設定
-        if (localStorage.getItem('userId')) {
-            userId.value = localStorage.getItem('userId');
+        // 從 localStorage 讀取儲存的 URL
+        const savedUrl = localStorage.getItem('webhookUrl');
+        if (savedUrl) {
+            webhookUrlInput.value = savedUrl;
+            updateStatus();
         }
         
-        // 儲存設定到 localStorage
-        userId.addEventListener('change', () => {
-            localStorage.setItem('userId', userId.value);
+        // 儲存 URL 到 localStorage
+        webhookUrlInput.addEventListener('input', () => {
+            const url = webhookUrlInput.value.trim();
+            if (url) {
+                localStorage.setItem('webhookUrl', url);
+            }
+            updateStatus();
         });
+        
+        function updateStatus() {
+            const url = webhookUrlInput.value.trim();
+            if (url) {
+                status.textContent = '點擊按鈕開始';
+                recordBtn.disabled = false;
+            } else {
+                status.textContent = '請先設定 Webhook URL';
+                recordBtn.disabled = true;
+            }
+        }
         
         recordBtn.addEventListener('click', toggleRecording);
         
@@ -364,121 +311,79 @@
         }
         
         async function startRecording() {
+            const webhookUrl = webhookUrlInput.value.trim();
+            
+            if (!webhookUrl) {
+                showError('請先輸入 Webhook URL');
+                return;
+            }
+            
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ 
-                    audio: {
-                        echoCancellation: true,
-                        noiseSuppression: true,
-                        sampleRate: 44100
-                    } 
+                    audio: true
                 });
                 
-                // 檢查瀏覽器支援的格式
-                let mimeType = 'audio/webm';
-                if (MediaRecorder.isTypeSupported('audio/wav')) {
-                    mimeType = 'audio/wav';
-                } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
-                    mimeType = 'audio/mp4';
-                } else if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
-                    mimeType = 'audio/webm;codecs=opus';
-                }
-                
-                mediaRecorder = new MediaRecorder(stream, {
-                    mimeType: mimeType
-                });
-                
-                console.log('使用錄音格式:', mimeType);
-                
+                mediaRecorder = new MediaRecorder(stream);
                 audioChunks = [];
                 
-                mediaRecorder.addEventListener('dataavailable', event => {
-                    if (event.data.size > 0) {
-                        audioChunks.push(event.data);
-                    }
-                });
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) audioChunks.push(e.data);
+                };
                 
-                mediaRecorder.addEventListener('stop', async () => {
-                    const audioBlob = new Blob(audioChunks, { type: mimeType });
-                    await uploadAudio(audioBlob, mimeType);
-                });
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    recordedAudioBlob = audioBlob;
+                    await uploadAudio(audioBlob, webhookUrl);
+                };
                 
                 mediaRecorder.start();
                 isRecording = true;
                 recordBtn.classList.add('recording');
                 recordBtn.textContent = '停止錄音';
-                status.textContent = '🔴 錄音中...';
+                status.textContent = '錄音中...';
                 timer.classList.add('recording');
-                hideMessages();
+                error.classList.remove('show');
+                resultSection.classList.remove('show');
                 
                 startTime = Date.now();
                 timerInterval = setInterval(updateTimer, 100);
                 
             } catch (err) {
-                showError('無法存取麥克風: ' + err.message);
-                console.error(err);
+                showError('無法存取麥克風');
             }
         }
         
         function stopRecording() {
             if (mediaRecorder && mediaRecorder.state !== 'inactive') {
                 mediaRecorder.stop();
-                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                mediaRecorder.stream.getTracks().forEach(t => t.stop());
             }
             
             isRecording = false;
             recordBtn.classList.remove('recording');
             recordBtn.textContent = '處理中...';
             recordBtn.disabled = true;
-            status.textContent = '⏳ 準備上傳...';
+            status.textContent = '上傳中...';
             timer.classList.remove('recording');
             clearInterval(timerInterval);
         }
         
         function updateTimer() {
             const elapsed = Date.now() - startTime;
-            const totalSeconds = Math.floor(elapsed / 1000);
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            const milliseconds = Math.floor((elapsed % 1000) / 100);
-            
-            timer.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${milliseconds}`;
+            const sec = Math.floor(elapsed / 1000);
+            const min = Math.floor(sec / 60);
+            const s = sec % 60;
+            timer.textContent = `${String(min).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
         }
         
-        async function uploadAudio(audioBlob, mimeType) {
+        async function uploadAudio(audioBlob, webhookUrl) {
             loading.classList.add('show');
-            status.textContent = '📤 正在上傳並轉換...';
             
             try {
-                // 生成 userId 和 fileName
-                const finalUserId = userId.value.trim() || generateUserId();
-                const finalFileName = fileName.value.trim() || generateFileName();
-                
-                // 根據 MIME type 決定副檔名
-                let fileExtension = 'webm';
-                if (mimeType.includes('wav')) {
-                    fileExtension = 'wav';
-                } else if (mimeType.includes('mp4')) {
-                    fileExtension = 'mp4';
-                } else if (mimeType.includes('ogg')) {
-                    fileExtension = 'ogg';
-                }
-                
-                // 建立 FormData
                 const formData = new FormData();
-                formData.append('audio_file', audioBlob, `recording.${fileExtension}`);
-                formData.append('userId', finalUserId);
-                formData.append('fileName', finalFileName);
-                formData.append('isVoice', 'true');
+                formData.append('audio_file', audioBlob, 'recording.webm');
                 
-                console.log('上傳資料:', {
-                    userId: finalUserId,
-                    fileName: finalFileName,
-                    audioSize: audioBlob.size,
-                    mimeType: mimeType,
-                    extension: fileExtension
-                });
-                
-                const response = await fetch(WEBHOOK_URL, {
+                const response = await fetch(webhookUrl, {
                     method: 'POST',
                     body: formData
                 });
@@ -486,72 +391,42 @@
                 loading.classList.remove('show');
                 recordBtn.disabled = false;
                 recordBtn.textContent = '開始錄音';
+                timer.textContent = '';
                 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error('上傳失敗 (HTTP ' + response.status + ')');
                 }
                 
-                const result = await response.text();
+                const result = await response.json();
                 
-                // 顯示成功訊息
-                showSuccess('✅ ' + result);
-                status.textContent = '✨ 轉換完成!';
-                
-                // 顯示轉錄結果 (從後端獲取)
-                // 注意: 您的後端目前只回傳 "筆記已成功儲存!"
-                // 如果需要顯示轉錄文字,需要修改後端回傳格式
-                
-                // 顯示使用者資訊
-                userInfo.innerHTML = `
-                    <span>👤 ${finalUserId}</span>
-                    <span>📄 ${finalFileName}</span>
-                `;
-                
-                // 清空音訊區塊
-                timer.textContent = '';
+                if (result.success && result.transcription) {
+                    resultText.textContent = result.transcription;
+                    resultSection.classList.add('show');
+                    status.textContent = '完成!';
+                    
+                    // 設定音訊播放器
+                    if (recordedAudioBlob) {
+                        const audioUrl = URL.createObjectURL(recordedAudioBlob);
+                        audioElement.src = audioUrl;
+                    }
+                } else {
+                    showError('轉換失敗,請檢查您的 n8n 工作流程設定');
+                    status.textContent = '點擊按鈕開始';
+                }
                 
             } catch (err) {
                 loading.classList.remove('show');
                 recordBtn.disabled = false;
                 recordBtn.textContent = '開始錄音';
-                showError('❌ 上傳失敗: ' + err.message);
-                status.textContent = '準備就緒';
+                showError('發生錯誤: ' + err.message + ' - 請確認 Webhook URL 是否正確');
+                status.textContent = '點擊按鈕開始';
                 timer.textContent = '';
-                console.error(err);
             }
         }
         
-        function generateUserId() {
-            return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        }
-        
-        function generateFileName() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const hour = String(now.getHours()).padStart(2, '0');
-            const minute = String(now.getMinutes()).padStart(2, '0');
-            
-            return `語音筆記_${year}${month}${day}_${hour}${minute}`;
-        }
-        
         function showError(message) {
-            hideMessages();
             error.textContent = message;
             error.classList.add('show');
-        }
-        
-        function showSuccess(message) {
-            hideMessages();
-            success.textContent = message;
-            success.classList.add('show');
-        }
-        
-        function hideMessages() {
-            error.classList.remove('show');
-            success.classList.remove('show');
-            resultSection.classList.remove('show');
         }
     </script>
 </body>
